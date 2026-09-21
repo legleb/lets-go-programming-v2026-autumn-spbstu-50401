@@ -5,18 +5,15 @@ import "fmt"
 func main() {
 	var a, b int
 	var op string
-	_, err1 := fmt.Scan(&a)
-	if err1 != nil {
+	if _, err := fmt.Scan(&a); err != nil {
 		fmt.Println("Invalid first operand")
 		return
 	}
-	_, err2 := fmt.Scan(&b)
-	if err2 != nil {
+	if _, err := fmt.Scan(&b); err != nil {
 		fmt.Println("Invalid second operand")
 		return
 	}
-	_, err3 := fmt.Scan(&op)
-	if err3 != nil {
+	if _, err := fmt.Scan(&op); err != nil {
 		fmt.Println("Invalid operation")
 	}
 
