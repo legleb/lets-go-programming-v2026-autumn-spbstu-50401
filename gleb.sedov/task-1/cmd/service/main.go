@@ -15,6 +15,7 @@ func main() {
 	}
 	if _, err := fmt.Scan(&op); err != nil {
 		fmt.Println("Invalid operation")
+		return
 	}
 
 	switch op {
