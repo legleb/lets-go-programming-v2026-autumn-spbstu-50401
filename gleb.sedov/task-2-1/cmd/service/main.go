@@ -22,6 +22,7 @@ func main() {
 
 		for range count {
 			var sign string
+
 			var temp int
 
 			if _, err := fmt.Scanf("%c= %d", &sign, &temp); err != nil {
