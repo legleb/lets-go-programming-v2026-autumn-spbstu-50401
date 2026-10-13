@@ -32,11 +32,11 @@ func main() {
 			}
 
 			switch sign {
-			case ">=":
+			case ">":
 				if temp > low {
 					low = temp
 				}
-			case "<=":
+			case "<":
 				if temp < high {
 					high = temp
 				}
