@@ -3,13 +3,14 @@ package main
 import "fmt"
 
 func main() {
-	var n int
-	if _, err := fmt.Scan(&n); err != nil {
+	var departments int
+	if _, err := fmt.Scan(&departments); err != nil {
 		fmt.Println("Error reading departments count")
 
 		return
 	}
-	for range n {
+
+	for range departments {
 		var count int
 		if _, err := fmt.Scan(&count); err != nil {
 			fmt.Println("Error reading employee count")
@@ -18,9 +19,10 @@ func main() {
 		}
 
 		low, high := 15, 30
+
 		for range count {
-			var s string
-			if _, err := fmt.Scan(&s); err != nil {
+			var sign string
+			if _, err := fmt.Scan(&sign); err != nil {
 				fmt.Println("Error reading sign")
 
 				return
@@ -34,7 +36,7 @@ func main() {
 				return
 			}
 
-			switch s {
+			switch sign {
 			case ">=":
 				if temp > low {
 					low = temp
