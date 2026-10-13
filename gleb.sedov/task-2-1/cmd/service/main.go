@@ -22,15 +22,9 @@ func main() {
 
 		for range count {
 			var sign string
-			if _, err := fmt.Scan(&sign); err != nil {
-				fmt.Println("Error reading sign")
-
-				return
-			}
-
 			var temp int
 
-			if _, err := fmt.Scan(&temp); err != nil {
+			if _, err := fmt.Scanf("%c= %d", &sign, &temp); err != nil {
 				fmt.Println("Error reading temperature")
 
 				return
