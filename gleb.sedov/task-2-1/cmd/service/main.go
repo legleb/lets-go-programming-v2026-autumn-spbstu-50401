@@ -6,26 +6,34 @@ func main() {
 	var n int
 	if _, err := fmt.Scan(&n); err != nil {
 		fmt.Println("Error reading departments count")
+
 		return
 	}
-	for i := 0; i < n; i++ {
-		var k int
-		if _, err := fmt.Scan(&k); err != nil {
+	for range n {
+		var count int
+		if _, err := fmt.Scan(&count); err != nil {
 			fmt.Println("Error reading employee count")
+
 			return
 		}
+
 		low, high := 15, 30
-		for j := 0; j < k; j++ {
+		for range count {
 			var s string
 			if _, err := fmt.Scan(&s); err != nil {
 				fmt.Println("Error reading sign")
+
 				return
 			}
+
 			var temp int
+
 			if _, err := fmt.Scan(&temp); err != nil {
 				fmt.Println("Error reading temperature")
+
 				return
 			}
+
 			switch s {
 			case ">=":
 				if temp > low {
@@ -37,8 +45,10 @@ func main() {
 				}
 			default:
 				fmt.Println("Неверная операция ограничения температуры")
+
 				return
 			}
+
 			if low > high {
 				fmt.Println(-1)
 			} else {
