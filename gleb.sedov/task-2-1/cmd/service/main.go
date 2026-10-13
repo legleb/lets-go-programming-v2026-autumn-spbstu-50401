@@ -14,6 +14,7 @@ func main() {
 			fmt.Println("Error reading employee count")
 			return
 		}
+		low, high := 15, 30
 		for j := 0; j < k; j++ {
 			var s string
 			if _, err := fmt.Scan(&s); err != nil {
@@ -24,6 +25,24 @@ func main() {
 			if _, err := fmt.Scan(&temp); err != nil {
 				fmt.Println("Error reading temperature")
 				return
+			}
+			switch s {
+			case ">=":
+				if temp > low {
+					low = temp
+				}
+			case "<=":
+				if temp < high {
+					high = temp
+				}
+			default:
+				fmt.Println("Неверная операция ограничения температуры")
+				return
+			}
+			if low > high {
+				fmt.Println(-1)
+			} else {
+				fmt.Println(low)
 			}
 		}
 	}
