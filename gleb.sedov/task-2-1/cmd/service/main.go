@@ -6,13 +6,13 @@ func readSignAndTemp() (string, int, error) {
 	var sign string
 
 	if _, err := fmt.Scan(&sign); err != nil {
-		return "", 0, err
+		return "", 0, fmt.Errorf("scan temp: %w", err)
 	}
 
 	var temp int
 
 	if _, err := fmt.Scan(&temp); err != nil {
-		return "", 0, err
+		return "", 0, fmt.Errorf("scan temp: %w", err)
 	}
 
 	return sign, temp, nil
@@ -48,11 +48,11 @@ func main() {
 			}
 
 			switch sign {
-			case ">":
+			case ">=":
 				if temp > low {
 					low = temp
 				}
-			case "<":
+			case "<=":
 				if temp < high {
 					high = temp
 				}
