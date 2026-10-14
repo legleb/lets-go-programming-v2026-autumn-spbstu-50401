@@ -2,8 +2,25 @@ package main
 
 import "fmt"
 
+func readSignAndTemp() (string, int, error) {
+	var sign string
+
+	if _, err := fmt.Scan(&sign); err != nil {
+		return "", 0, err
+	}
+
+	var temp int
+
+	if _, err := fmt.Scan(&temp); err != nil {
+		return "", 0, err
+	}
+
+	return sign, temp, nil
+}
+
 func main() {
 	var departments int
+
 	if _, err := fmt.Scan(&departments); err != nil {
 		fmt.Println("Error reading departments count")
 
@@ -12,6 +29,7 @@ func main() {
 
 	for range departments {
 		var count int
+
 		if _, err := fmt.Scan(&count); err != nil {
 			fmt.Println("Error reading employee count")
 
@@ -21,11 +39,9 @@ func main() {
 		low, high := 15, 30
 
 		for range count {
-			var sign string
+			sign, temp, err := readSignAndTemp()
 
-			var temp int
-
-			if _, err := fmt.Scanf("%c= %d", &sign, &temp); err != nil {
+			if err != nil {
 				fmt.Println("Error reading temperature")
 
 				return
@@ -41,7 +57,7 @@ func main() {
 					high = temp
 				}
 			default:
-				fmt.Println("Неверная операция ограничения температуры")
+				fmt.Println("Wrong sign")
 
 				return
 			}
