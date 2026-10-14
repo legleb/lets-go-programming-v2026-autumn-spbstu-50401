@@ -53,6 +53,7 @@ func main() {
 				}
 			default:
 				fmt.Println("Wrong sign")
+
 				return
 			}
 
