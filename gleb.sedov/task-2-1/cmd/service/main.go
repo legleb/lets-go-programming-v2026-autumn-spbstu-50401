@@ -4,13 +4,11 @@ import "fmt"
 
 func readSignAndTemp() (string, int, error) {
 	var sign string
-
 	if _, err := fmt.Scan(&sign); err != nil {
-		return "", 0, fmt.Errorf("scan temp: %w", err)
+		return "", 0, fmt.Errorf("scan sign: %w", err)
 	}
 
 	var temp int
-
 	if _, err := fmt.Scan(&temp); err != nil {
 		return "", 0, fmt.Errorf("scan temp: %w", err)
 	}
@@ -20,7 +18,6 @@ func readSignAndTemp() (string, int, error) {
 
 func main() {
 	var departments int
-
 	if _, err := fmt.Scan(&departments); err != nil {
 		fmt.Println("Error reading departments count")
 
@@ -29,7 +26,6 @@ func main() {
 
 	for range departments {
 		var count int
-
 		if _, err := fmt.Scan(&count); err != nil {
 			fmt.Println("Error reading employee count")
 
