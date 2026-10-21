@@ -19,7 +19,7 @@ func readSignAndTemp() (string, int, error) {
 func main() {
 	var departments int
 	if _, err := fmt.Scan(&departments); err != nil {
-		fmt.Println("Error reading departments count")
+		fmt.Println(err)
 
 		return
 	}
@@ -27,7 +27,7 @@ func main() {
 	for range departments {
 		var count int
 		if _, err := fmt.Scan(&count); err != nil {
-			fmt.Println("Error reading employee count")
+			fmt.Println(err)
 
 			return
 		}
@@ -37,7 +37,7 @@ func main() {
 		for range count {
 			sign, temp, err := readSignAndTemp()
 			if err != nil {
-				fmt.Println("Error reading temperature")
+				fmt.Println(err)
 
 				return
 			}
