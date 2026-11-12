@@ -48,6 +48,7 @@ func main() {
 	}
 
 	yamlData, err := os.ReadFile(*configPath)
+
 	if err != nil {
 		panic(fmt.Sprintf("error reading config: %v", err))
 	}
@@ -60,17 +61,18 @@ func main() {
 
 	currencies := loadXML(cfg.InputFile)
 	jsonData, err := json.MarshalIndent(currencies, "", "    ")
+
 	if err != nil {
 		panic(fmt.Sprintf("JSON serialization error: %v", err))
 	}
 
 	dir := filepath.Dir(cfg.OutputFile)
 
-	if err := os.MkdirAll(dir, 0o755); err != nil {
+	if err := os.MkdirAll(dir, 0755); err != nil {
 		panic(fmt.Sprintf("error creating directory: %v", err))
 	}
 
-	if err := os.WriteFile(cfg.OutputFile, jsonData, 0o600); err != nil {
+	if err := os.WriteFile(cfg.OutputFile, jsonData, 0600); err != nil {
 		panic(fmt.Sprintf("file write error: %v", err))
 	}
 }
@@ -85,6 +87,7 @@ func charsetReader(charset string, input io.Reader) (io.Reader, error) {
 
 func loadXML(path string) []Currency {
 	data, err := os.ReadFile(path)
+
 	if err != nil {
 		panic(fmt.Sprintf("XML reading error: %v", err))
 	}
@@ -109,6 +112,7 @@ func loadXML(path string) []Currency {
 
 		valStr := strings.ReplaceAll(strings.TrimSpace(valute.Value), ",", ".")
 		valFloat, err := strconv.ParseFloat(valStr, 64)
+
 		if err != nil {
 			panic(fmt.Sprintf("incorrect value %q: %v", valute.Value, err))
 		}
