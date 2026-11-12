@@ -59,13 +59,40 @@ func main() {
 		panic(fmt.Sprintf("YAML decoding error: %v", err))
 	}
 
-	xmlData, err := os.ReadFile(cfg.InputFile)
+	currencies := loadXML(cfg.InputFile)
+	jsonData, err := json.MarshalIndent(currencies, "", "    ")
+
+	if err != nil {
+		panic(fmt.Sprintf("JSON serialization error: %v", err))
+	}
+
+	dir := filepath.Dir(cfg.OutputFile)
+
+	if err := os.MkdirAll(dir, 0755); err != nil {
+		panic(fmt.Sprintf("error creating directory: %v", err))
+	}
+
+	if err := os.WriteFile(cfg.OutputFile, jsonData, 0600); err != nil {
+		panic(fmt.Sprintf("file write error: %v", err))
+	}
+}
+
+func charsetReader(charset string, input io.Reader) (io.Reader, error) {
+	if strings.ToLower(charset) == "windows-1251" {
+		return charmap.Windows1251.NewDecoder().Reader(input), nil
+	}
+
+	return input, nil
+}
+
+func loadXML(path string) []Currency {
+	data, err := os.ReadFile(path)
 
 	if err != nil {
 		panic(fmt.Sprintf("XML reading error: %v", err))
 	}
 
-	decoder := xml.NewDecoder(bytes.NewReader(xmlData))
+	decoder := xml.NewDecoder(bytes.NewReader(data))
 	decoder.CharsetReader = charsetReader
 	var valCurs ValCurs
 
@@ -100,27 +127,5 @@ func main() {
 		return currencies[i].Value > currencies[j].Value
 	})
 
-	jsonData, err := json.MarshalIndent(currencies, "", "    ")
-
-	if err != nil {
-		panic(fmt.Sprintf("JSON serialization error: %v", err))
-	}
-
-	dir := filepath.Dir(cfg.OutputFile)
-
-	if err := os.MkdirAll(dir, 0755); err != nil {
-		panic(fmt.Sprintf("error creating directory: %v", err))
-	}
-
-	if err := os.WriteFile(cfg.OutputFile, jsonData, 0600); err != nil {
-		panic(fmt.Sprintf("file write error: %v", err))
-	}
-}
-
-func charsetReader(charset string, input io.Reader) (io.Reader, error) {
-	if strings.ToLower(charset) == "windows-1251" {
-		return charmap.Windows1251.NewDecoder().Reader(input), nil
-	}
-
-	return input, nil
+	return currencies
 }
