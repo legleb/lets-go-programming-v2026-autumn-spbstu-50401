@@ -18,7 +18,7 @@ import (
 )
 
 type Config struct {
-	InputFile string `yaml:"input-file"`
+	InputFile  string `yaml:"input-file"`
 	OutputFile string `yaml:"output-file"`
 }
 
@@ -28,15 +28,15 @@ type ValCurs struct {
 }
 
 type Valute struct {
-	NumCode string `xml:"NumCode"`
+	NumCode  string `xml:"NumCode"`
 	CharCode string `xml:"CharCode"`
-	Value string `xml:"Value"`
+	Value    string `xml:"Value"`
 }
 
 type Currency struct {
-	NumCode int `json:"num_code"`
-	CharCode string `json:"char_code"`
-	Value float64 `json:"value"`
+	NumCode  int     `json:"num_code"`
+	CharCode string  `json:"char_code"`
+	Value    float64 `json:"value"`
 }
 
 func main() {
@@ -112,15 +112,14 @@ func loadXML(path string) []Currency {
 
 		valStr := strings.ReplaceAll(strings.TrimSpace(valute.Value), ",", ".")
 		valFloat, err := strconv.ParseFloat(valStr, 64)
-
 		if err != nil {
 			panic(fmt.Sprintf("incorrect value %q: %v", valute.Value, err))
 		}
 
 		currencies = append(currencies, Currency{
-			NumCode: codeInt,
+			NumCode:  codeInt,
 			CharCode: strings.TrimSpace(valute.CharCode),
-			Value: valFloat,
+			Value:    valFloat,
 		})
 	}
 
