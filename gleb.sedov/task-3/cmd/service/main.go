@@ -40,26 +40,26 @@ type Currency struct {
 }
 
 func main() {
-	configPath := flag.String("config", "", "путь до YAML-конфига")
+	configPath := flag.String("config", "", "path to the YAML config")
 	flag.Parse()
 
 	if *configPath == "" {
-		panic("не передан обязательный флаг -config")
+		panic("the mandatory -config flag was not provided")
 	}
 
 	yamlData, err := os.ReadFile(*configPath)
 	if err != nil {
-		panic(fmt.Sprintf("ошибка чтения конфига: %v", err))
+		panic(fmt.Sprintf("error reading config: %v", err))
 	}
 
 	var cfg Config
 	if err := yaml.Unmarshal(yamlData, &cfg); err != nil {
-		panic(fmt.Sprintf("ошибка декодирования YAML: %v", err))
+		panic(fmt.Sprintf("YAML decoding error: %v", err))
 	}
 
 	xmlData, err := os.ReadFile(cfg.InputFile)
 	if err != nil {
-		panic(fmt.Sprintf("ошибка чтения XML: %v", err))
+		panic(fmt.Sprintf("XML reading error: %v", err))
 	}
 
 	decoder := xml.NewDecoder(bytes.NewReader(xmlData))
@@ -72,7 +72,7 @@ func main() {
 
 	var valCurs ValCurs
 	if err := decoder.Decode(&valCurs); err != nil {
-		panic(fmt.Sprintf("ошибка декодирования XML: %v", err))
+		panic(fmt.Sprintf("XML decoding error: %v", err))
 	}
 
 	currencies := make([]Currency, 0, len(valCurs.Valutes))
@@ -86,7 +86,7 @@ func main() {
 		valStr := strings.ReplaceAll(strings.TrimSpace(v.Value), ",", ".")
 		valFloat, err := strconv.ParseFloat(valStr, 64)
 		if err != nil {
-			panic(fmt.Sprintf("некорректное значение %q: %v", v.Value, err))
+			panic(fmt.Sprintf("incorrect value %q: %v", v.Value, err))
 		}
 
 		currencies = append(currencies, Currency{
@@ -102,15 +102,15 @@ func main() {
 
 	jsonData, err := json.MarshalIndent(currencies, "", "    ")
 	if err != nil {
-		panic(fmt.Sprintf("ошибка сериализации JSON: %v", err))
+		panic(fmt.Sprintf("JSON serialization error: %v", err))
 	}
 
 	dir := filepath.Dir(cfg.OutputFile)
 	if err := os.MkdirAll(dir, 0755); err != nil {
-		panic(fmt.Sprintf("ошибка создания директории: %v", err))
+		panic(fmt.Sprintf("error creating directory: %v", err))
 	}
 
 	if err := os.WriteFile(cfg.OutputFile, jsonData, 0644); err != nil {
-		panic(fmt.Sprintf("ошибка записи файла: %v", err))
+		panic(fmt.Sprintf("file write error: %v", err))
 	}
 }
