@@ -2,11 +2,13 @@ package main
 
 import (
 	"bytes"
+	"encoding/json"
 	"encoding/xml"
 	"flag"
 	"fmt"
 	"io"
 	"os"
+	"path/filepath"
 	"sort"
 	"strconv"
 	"strings"
@@ -98,5 +100,17 @@ func main() {
 		return currencies[i].Value > currencies[j].Value
 	})
 
-	fmt.Printf("Отсортировано: %d. Первый: %s (%.4f)\n", len(currencies), currencies[0].CharCode, currencies[0].Value)
+	jsonData, err := json.MarshalIndent(currencies, "", "    ")
+	if err != nil {
+		panic(fmt.Sprintf("ошибка сериализации JSON: %v", err))
+	}
+
+	dir := filepath.Dir(cfg.OutputFile)
+	if err := os.MkdirAll(dir, 0755); err != nil {
+		panic(fmt.Sprintf("ошибка создания директории: %v", err))
+	}
+
+	if err := os.WriteFile(cfg.OutputFile, jsonData, 0644); err != nil {
+		panic(fmt.Sprintf("ошибка записи файла: %v", err))
+	}
 }
