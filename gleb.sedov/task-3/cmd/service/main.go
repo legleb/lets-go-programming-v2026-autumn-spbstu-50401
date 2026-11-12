@@ -65,6 +65,7 @@ func main() {
 	}
 
 	currencies := loadXML(cfg.InputFile)
+
 	jsonData, err := json.MarshalIndent(currencies, "", "    ")
 	if err != nil {
 		panic(fmt.Sprintf("JSON serialization error: %v", err))
@@ -91,7 +92,6 @@ func charsetReader(charset string, input io.Reader) (io.Reader, error) {
 
 func loadXML(path string) []Currency {
 	data, err := os.ReadFile(path)
-
 	if err != nil {
 		panic(fmt.Sprintf("XML reading error: %v", err))
 	}
@@ -115,8 +115,8 @@ func loadXML(path string) []Currency {
 		}
 
 		valStr := strings.ReplaceAll(strings.TrimSpace(valute.Value), ",", ".")
-		valFloat, err := strconv.ParseFloat(valStr, 64)
 
+		valFloat, err := strconv.ParseFloat(valStr, 64)
 		if err != nil {
 			panic(fmt.Sprintf("incorrect value %q: %v", valute.Value, err))
 		}
