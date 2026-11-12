@@ -53,7 +53,6 @@ func main() {
 	}
 
 	yamlData, err := os.ReadFile(*configPath)
-
 	if err != nil {
 		panic(fmt.Sprintf("error reading config: %v", err))
 	}
