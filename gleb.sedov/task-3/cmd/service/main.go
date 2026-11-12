@@ -7,6 +7,8 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"sort"
+	"strconv"
 	"strings"
 
 	"golang.org/x/text/encoding/charmap"
@@ -27,6 +29,12 @@ type Valute struct {
 	NumCode  string `xml:"NumCode"`
 	CharCode string `xml:"CharCode"`
 	Value    string `xml:"Value"`
+}
+
+type Currency struct {
+	NumCode  int     `json:"num_code"`
+	CharCode string  `json:"char_code"`
+	Value    float64 `json:"value"`
 }
 
 func main() {
@@ -65,5 +73,30 @@ func main() {
 		panic(fmt.Sprintf("ошибка декодирования XML: %v", err))
 	}
 
-	fmt.Printf("Успешно прочитано валют: %d\n", len(valCurs.Valutes))
+	currencies := make([]Currency, 0, len(valCurs.Valutes))
+
+	for _, v := range valCurs.Valutes {
+		codeInt := 0
+		if s := strings.TrimSpace(v.NumCode); s != "" {
+			codeInt, _ = strconv.Atoi(s)
+		}
+
+		valStr := strings.ReplaceAll(strings.TrimSpace(v.Value), ",", ".")
+		valFloat, err := strconv.ParseFloat(valStr, 64)
+		if err != nil {
+			panic(fmt.Sprintf("некорректное значение %q: %v", v.Value, err))
+		}
+
+		currencies = append(currencies, Currency{
+			NumCode:  codeInt,
+			CharCode: strings.TrimSpace(v.CharCode),
+			Value:    valFloat,
+		})
+	}
+
+	sort.Slice(currencies, func(i, j int) bool {
+		return currencies[i].Value > currencies[j].Value
+	})
+
+	fmt.Printf("Отсортировано: %d. Первый: %s (%.4f)\n", len(currencies), currencies[0].CharCode, currencies[0].Value)
 }
